@@ -21,8 +21,7 @@
   transition: transform 0.3s;
 }
 
-.TodoFilter-menu li:hover,
-li:focus {
+.TodoFilter-menu li:hover {
   border-bottom: 2px solid #680a10;
   box-shadow: 0 0.5em 0.5em -0.4em;
   transform: translateY(-0.25em);
