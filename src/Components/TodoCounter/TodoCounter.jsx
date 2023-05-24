@@ -11,10 +11,11 @@ function TodoCounter({ completedTodo, totalTodo }) {
         </span>
       </h1>
       <p className='TodoCounter'>
-        {completedTodo === totalTodo ? (
+        {totalTodo === 0 ? (
+          <span>No tienes tareas pendientes</span>
+        ) : completedTodo === totalTodo ? (
           <>
-            <span>Felicidades!!!</span>
-            <br /> Has completado <span>TODAS</span> las tareas
+            Has completado <span>TODAS</span> las tareas
           </>
         ) : (
           <>
