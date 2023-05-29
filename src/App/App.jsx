@@ -2,6 +2,9 @@ import { TodoCounter } from "../Components/TodoCounter/TodoCounter";
 // import { TodoFilter } from "../Components/TodoFilter/TodoFilter";
 import { TodoSearch } from "../Components/TodoSearch/TodoSearch";
 import { TodoList } from "../Components/TodoList/TodoList";
+import { TodosLoading } from "../Components/TodosLoading/TodosLoading";
+import { TodosError } from "../Components/TodosError/TodosError";
+import { TodosEmpty } from "../Components/TodosEmpty/TodosEmpty";
 import { TodoItem } from "../Components/TodoItem/TodoItem";
 import { CreateTodoButton } from "../Components/CreateTodoButton/CreateTodoButton";
 import { useLocalStorage } from "./useLocalStorage";
@@ -71,7 +74,12 @@ import { useState } from "react";
 // localStorage.removeItem("TODOS_V1");
 
 function App() {
-  const [todos, saveTodos] = useLocalStorage("TODOS_V1", []);
+  const {
+    item: todos,
+    saveItem: saveTodos,
+    loading,
+    error,
+  } = useLocalStorage("TODOS_V1", []);
   const [searchValue, setSearchValue] = useState("");
 
   const completedTodos = todos.filter((todo) => !!todo.completed).length;
@@ -101,7 +109,21 @@ function App() {
       {/* <TodoFilter /> */}
 
       <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-      <TodoList>
+      <TodoList loading={loading} error={error}>
+        {loading && (
+          <>
+            <TodosLoading />
+            <TodosLoading />
+            <TodosLoading />
+            <TodosLoading />
+            <TodosLoading />
+          </>
+        )}
+
+        {error && <TodosError />}
+
+        {!loading && searchedTodos.length === 0 && <TodosEmpty />}
+
         {searchedTodos.map((todo) => {
           return (
             <TodoItem
