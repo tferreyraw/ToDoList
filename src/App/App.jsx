@@ -1,5 +1,4 @@
 import { TodoCounter } from "../Components/TodoCounter/TodoCounter";
-// import { TodoFilter } from "../Components/TodoFilter/TodoFilter";
 import { TodoSearch } from "../Components/TodoSearch/TodoSearch";
 import { TodoList } from "../Components/TodoList/TodoList";
 import { TodosLoading } from "../Components/TodosLoading/TodosLoading";
@@ -7,108 +6,26 @@ import { TodosError } from "../Components/TodosError/TodosError";
 import { TodosEmpty } from "../Components/TodosEmpty/TodosEmpty";
 import { TodoItem } from "../Components/TodoItem/TodoItem";
 import { CreateTodoButton } from "../Components/CreateTodoButton/CreateTodoButton";
-import { useLocalStorage } from "./useLocalStorage";
-import { useState } from "react";
-
-// const defaultTodos = [
-//   {
-//     text: "Cortar cebolla!",
-//     completed: true,
-//   },
-//   {
-//     text: "Hacer Curso!",
-//     completed: false,
-//   },
-//   {
-//     text: "Llorar con la llorona!",
-//     completed: false,
-//   },
-//   {
-//     text: "Merendar!",
-//     completed: true,
-//   },
-//   {
-//     text: "Hacer ejercicio!",
-//     completed: true,
-//   },
-//   {
-//     text: "Cocinar almuerzo!",
-//     completed: false,
-//   },
-//   {
-//     text: "Cortar cebolla",
-//     completed: true,
-//   },
-//   {
-//     text: "Hacer Curso",
-//     completed: false,
-//   },
-//   {
-//     text: "Llorar con la llorona",
-//     completed: true,
-//   },
-//   {
-//     text: "Merendar",
-//     completed: false,
-//   },
-//   {
-//     text: "Hacer ejercicio",
-//     completed: true,
-//   },
-//   {
-//     text: "Cocinar almuerzo",
-//     completed: true,
-//   },
-//   {
-//     text: "Cocinar cena",
-//     completed: false,
-//   },
-//   {
-//     text: "Cenar",
-//     completed: false,
-//   },
-// ];
-
-// localStorage.setItem("TODOS_V1", JSON.stringify(defaultTodos));
-
-// localStorage.removeItem("TODOS_V1");
+import { TodoModal } from "../Components/TodoModal/Todomodal";
+import { TodoContext } from "../Components/TodoContext/TodoContext";
+import { useContext } from "react";
+import { TodoForm } from "../Components/TodoForm/TodoForm";
 
 function App() {
   const {
-    item: todos,
-    saveItem: saveTodos,
     loading,
     error,
-  } = useLocalStorage("TODOS_V1", []);
-  const [searchValue, setSearchValue] = useState("");
-
-  const completedTodos = todos.filter((todo) => !!todo.completed).length;
-  const totalTodos = todos.length;
-
-  const searchedTodos = todos.filter((todo) =>
-    todo.text.toLowerCase().includes(searchValue.toLowerCase())
-  );
-
-  const completeTodo = (text) => {
-    const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-    newTodos[todoIndex].completed = !newTodos[todoIndex].completed;
-    saveTodos(newTodos);
-  };
-
-  const deleteTodo = (text) => {
-    const newTodos = [...todos];
-    const todoIndex = newTodos.findIndex((todo) => todo.text === text);
-    newTodos.splice(todoIndex, 1);
-    saveTodos(newTodos);
-  };
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+    openModal,
+    setOpenModal,
+  } = useContext(TodoContext);
 
   return (
     <>
-      <TodoCounter completedTodo={completedTodos} totalTodo={totalTodos} />
-      {/* <TodoFilter /> */}
-
-      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
+      <TodoCounter />
+      <TodoSearch />
       <TodoList loading={loading} error={error}>
         {loading && (
           <>
@@ -124,19 +41,24 @@ function App() {
 
         {!loading && searchedTodos.length === 0 && <TodosEmpty />}
 
-        {searchedTodos.map((todo) => {
+        {searchedTodos.map(({ text, completed }) => {
           return (
             <TodoItem
-              key={todo.text}
-              text={todo.text}
-              completed={todo.completed}
-              onComplete={() => completeTodo(todo.text)}
-              onDelete={() => deleteTodo(todo.text)}
+              key={text}
+              text={text}
+              completed={completed}
+              onComplete={() => completeTodo(text)}
+              onDelete={() => deleteTodo(text)}
             />
           );
         })}
       </TodoList>
-      <CreateTodoButton />
+      <CreateTodoButton setOpenModal={setOpenModal} />
+      {openModal && (
+        <TodoModal>
+          <TodoForm />
+        </TodoModal>
+      )}
     </>
   );
 }

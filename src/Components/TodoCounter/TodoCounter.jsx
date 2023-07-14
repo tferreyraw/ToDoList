@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import "./TodoCounter.css";
 import { FaRegCheckCircle } from "react-icons/fa";
+import { TodoContext } from "../TodoContext/TodoContext";
 
-function TodoCounter({ completedTodo, totalTodo }) {
+function TodoCounter() {
+  const { completedTodos, totalTodos } = useContext(TodoContext);
   return (
     <>
       <h1 className='TodoTitle'>
@@ -11,16 +14,16 @@ function TodoCounter({ completedTodo, totalTodo }) {
         </span>
       </h1>
       <p className='TodoCounter'>
-        {totalTodo === 0 ? (
+        {totalTodos === 0 ? (
           <span>No tienes tareas pendientes</span>
-        ) : completedTodo === totalTodo ? (
+        ) : completedTodos === totalTodos ? (
           <>
             Has completado <span>TODAS</span> las tareas
           </>
         ) : (
           <>
-            Has completado <span>{completedTodo}</span> de{" "}
-            <span>{totalTodo}</span> tareas
+            Has completado <span>{completedTodos}</span> de{" "}
+            <span>{totalTodos}</span> tareas
           </>
         )}
       </p>

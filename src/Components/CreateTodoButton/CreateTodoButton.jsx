@@ -1,13 +1,13 @@
 import "./CreateTodoButton.css";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-function CreateTodoButton() {
+function CreateTodoButton({ setOpenModal }) {
   return (
     <div className='createTodo-container'>
       <button
         type='button'
         className='createTodoButton'
-        onClick={() => console.log("diste Click!!!!")}
+        onClick={() => setOpenModal((state) => !state)}
       >
         <AiOutlinePlusCircle size={40} height='100%' />
       </button>

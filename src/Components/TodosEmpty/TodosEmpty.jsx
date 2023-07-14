@@ -1,7 +1,7 @@
 import "./TodosEmpty.css";
 
 function TodosEmpty() {
-  return <p>Crea tu primer tarea!!!</p>;
+  return <p className='Todos-empty'>Crea tu primer tarea!!!</p>;
 }
 
 export { TodosEmpty };

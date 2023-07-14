@@ -1,7 +1,7 @@
 import "./TodosError.css";
 
 function TodosError() {
-  return <p>Whoops!! Ocurrio un error</p>;
+  return <p className='Todos-error'>Whoops!! Ocurrio un error</p>;
 }
 
 export { TodosError };
